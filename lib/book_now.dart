@@ -658,7 +658,9 @@ class _ServicesFormState extends State<ServicesForm> {
   bool _hasSelectedAnyTour() {
     return _selectedSnorkelingTours.isNotEmpty ||
         _selectedIslandTours.isNotEmpty ||
-        _selectedInlandTours.isNotEmpty;
+        _selectedInlandTours.isNotEmpty ||
+        _selectedCarRentals.isNotEmpty ||
+        _selectedHotels.isNotEmpty;
   }
 
   @override
@@ -1051,7 +1053,7 @@ class _ServicesFormState extends State<ServicesForm> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Please select at least one tour (Snorkeling, Island, or Inland) to proceed.',
+                                  'Please select at least one to proceed.',
                                 ),
                                 backgroundColor: Colors.red,
                               ),
