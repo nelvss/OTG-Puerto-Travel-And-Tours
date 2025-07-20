@@ -328,7 +328,13 @@ class _HomePageTabState extends State<HomePageTab> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BookingForm(),
+                                      builder: (context) => Theme(
+                                        data: Theme.of(context).copyWith(
+                                          textTheme: Theme.of(context).textTheme
+                                              .apply(fontFamily: 'Roboto'),
+                                        ),
+                                        child: BookingForm(),
+                                      ),
                                     ),
                                   );
                                 },
