@@ -71,7 +71,7 @@ This system:
 
 ---
 
-### ✅ How users can get started with the project
+### How users can get started with the project
 
 * Tourists simply visit the website and book a service by choosing a package, selecting a date, and submitting their information.
 * Admins and staff can **log in securely** to manage user bookings, schedules, and availability.
