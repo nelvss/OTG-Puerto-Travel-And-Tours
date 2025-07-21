@@ -33,6 +33,21 @@ class _AdminDashboardState extends State<AdminDashboard> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   bool _isSearching = false;
+
+  // Add form controllers for new booking
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _servicesController = TextEditingController();
+  final TextEditingController _rentalController = TextEditingController();
+  final TextEditingController _arrivalDateController = TextEditingController();
+  final TextEditingController _departureDateController =
+      TextEditingController();
+  final TextEditingController _hotelController = TextEditingController();
+  final TextEditingController _noOfPaxController = TextEditingController();
+  final TextEditingController _totalPriceController = TextEditingController();
+  final TextEditingController _contactNumberController =
+      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
   // Remove _isSidebarVisible
 
   List<BookingData> bookings = [
@@ -294,6 +309,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
           Expanded(child: _buildPageContent()),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddBookingDialog,
+        backgroundColor: Colors.orange,
+        child: Icon(Icons.add, color: Colors.white),
+        tooltip: 'Add New Booking',
+      ),
     );
   }
 
@@ -376,6 +397,36 @@ class _AdminDashboardState extends State<AdminDashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header with Add New Booking button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Booking Management',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: _showAddBookingDialog,
+                icon: Icon(Icons.add, color: Colors.white),
+                label: Text(
+                  'Add New Booking',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 24),
           // Statistics Cards
           Row(
             children: [
@@ -659,6 +710,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                   ),
                                   child: Row(
                                     children: [
+                                      // Add pencil icon for adding new booking
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.blue,
+                                          size: 20,
+                                        ),
+                                        onPressed: () =>
+                                            _showAddBookingDialog(),
+                                        tooltip: 'Add New Booking',
+                                      ),
+                                      SizedBox(width: 8),
                                       if (booking.status ==
                                           BookingStatus.pending) ...[
                                         _buildActionButton(
@@ -1025,6 +1088,193 @@ class _AdminDashboardState extends State<AdminDashboard> {
         duration: Duration(seconds: 2),
       ),
     );
+  }
+
+  void _showAddBookingDialog() {
+    // Clear previous form data
+    _nameController.clear();
+    _servicesController.clear();
+    _rentalController.clear();
+    _arrivalDateController.clear();
+    _departureDateController.clear();
+    _hotelController.clear();
+    _noOfPaxController.clear();
+    _totalPriceController.clear();
+    _contactNumberController.clear();
+    _emailController.clear();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add New Booking'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _servicesController,
+                  decoration: InputDecoration(
+                    labelText: 'Services',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _rentalController,
+                  decoration: InputDecoration(
+                    labelText: 'Rental',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _arrivalDateController,
+                  decoration: InputDecoration(
+                    labelText: 'Arrival Date (YYYY-MM-DD)',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _departureDateController,
+                  decoration: InputDecoration(
+                    labelText: 'Departure Date (YYYY-MM-DD)',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _hotelController,
+                  decoration: InputDecoration(
+                    labelText: 'Hotel',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _noOfPaxController,
+                  decoration: InputDecoration(
+                    labelText: 'Number of Pax',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _totalPriceController,
+                  decoration: InputDecoration(
+                    labelText: 'Total Price',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _contactNumberController,
+                  decoration: InputDecoration(
+                    labelText: 'Contact Number',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => _addNewBooking(),
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _addNewBooking() {
+    // Validate required fields
+    if (_nameController.text.isEmpty ||
+        _servicesController.text.isEmpty ||
+        _arrivalDateController.text.isEmpty ||
+        _departureDateController.text.isEmpty ||
+        _noOfPaxController.text.isEmpty ||
+        _totalPriceController.text.isEmpty ||
+        _contactNumberController.text.isEmpty ||
+        _emailController.text.isEmpty) {
+      _showSnackBar('Please fill in all required fields', Colors.red);
+      return;
+    }
+
+    // Parse number of pax
+    int? noOfPax = int.tryParse(_noOfPaxController.text);
+    if (noOfPax == null) {
+      _showSnackBar(
+        'Please enter a valid number for Number of Pax',
+        Colors.red,
+      );
+      return;
+    }
+
+    // Create new booking
+    BookingData newBooking = BookingData(
+      name: _nameController.text,
+      Services: _servicesController.text,
+      Rental: _rentalController.text.isEmpty ? 'None' : _rentalController.text,
+      ArrivalDate: _arrivalDateController.text,
+      DepartureDate: _departureDateController.text,
+      Hotel: _hotelController.text.isEmpty ? 'None' : _hotelController.text,
+      noOfPax: noOfPax,
+      TotalPrice: _totalPriceController.text,
+      ContactNumber: _contactNumberController.text,
+      email: _emailController.text,
+      status: BookingStatus.pending,
+    );
+
+    // Add to bookings list
+    setState(() {
+      bookings.add(newBooking);
+    });
+
+    // Close dialog
+    Navigator.of(context).pop();
+
+    // Show success message
+    _showSnackBar('New booking added successfully!', Colors.green);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _nameController.dispose();
+    _servicesController.dispose();
+    _rentalController.dispose();
+    _arrivalDateController.dispose();
+    _departureDateController.dispose();
+    _hotelController.dispose();
+    _noOfPaxController.dispose();
+    _totalPriceController.dispose();
+    _contactNumberController.dispose();
+    _emailController.dispose();
+    super.dispose();
   }
 }
 
